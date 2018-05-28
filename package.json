@@ -1,0 +1,12 @@
+{
+  "name": "top_js_ttt",
+  "version": "1.0.0",
+  "scripts": {
+    "scss": "node-sass --output-style compressed -o dist/css src/scss"
+  },
+  "devDependencies": {
+    "autoprefixer": "^8.5.1",
+    "node-sass": "^4.9.0",
+    "postcss-cli": "^5.0.0"
+  }
+}
