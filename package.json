@@ -1,12 +1,33 @@
 {
   "name": "top_js_ttt",
   "version": "1.0.0",
+  "description": "A version of Tic-Tac-Toe build with JS",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leosoaivan/TOP_js_library.git"
+  },
+  "author": "LPSV",
+  "license": "ISC",
   "scripts": {
-    "scss": "node-sass --output-style compressed -o dist/css src/scss"
+    "scss": "node-sass --output-style compressed -o dist/css src/scss",
+    "autoprefixer": "postcss -u autoprefixer -r dist/css/*",
+    "lint": "eslint src/js --fix",
+    "uglify": "uglifyjs src/js/*.js -m -o dist/js/app.js && uglifyjs src/js/*.js -m -c -o dist/js/app.min.js",
+    "serve": "browser-sync start --server --files 'dist/css/*.css, dist/js/*.js",
+    "build:css": "npm run scss && npm run autoprefixer",
+    "build:js": "npm run lint && npm run uglify",
+    "build:all": "npm run build:css && npm run build:js",
+    "watch:css": "onchange 'src/scss/*.scss' -- npm run build:css",
+    "watch:js": "onchange 'src/js/*.js' -- npm run build:js",
+    "watch:all": "parallelshell 'npm run serve' 'npm run watch:css' 'npm run watch:js'"
   },
   "devDependencies": {
     "autoprefixer": "^8.5.1",
+    "browser-sync": "^2.24.4",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
     "node-sass": "^4.9.0",
-    "postcss-cli": "^5.0.0"
+    "postcss-cli": "^5.0.0",
+    "uglify-es": "^3.3.9"
   }
 }
