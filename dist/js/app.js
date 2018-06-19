@@ -1,1 +1,1 @@
-"use strict";const gameBoard=(()=>{let e=Array(8).fill("")})();const displayController=(()=>{const e=document.querySelector(".gameboard");const o=o=>{e.appendChild(o)};const t=e=>{for(let t=0;t<=e;t++){let e=document.createElement("div");e.classList.add("gameboard_box");o(e)}};const r=()=>{};return{createGameBoardBox:t}})();displayController.createGameBoardBox(9);
+"use strict";const gameBoard=(()=>{let r=Array(8).fill("")})();const displayController=(()=>{return{}})();
