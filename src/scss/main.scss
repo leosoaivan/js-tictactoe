@@ -11,5 +11,8 @@
   width: 150px;
   height: 150px;
   background-color: mediumseagreen;
-  margin: 5px;
+
+  &:hover {
+    background-color: seagreen;
+  }
 }
