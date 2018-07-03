@@ -1,1 +1,1 @@
-"use strict";const gameBoard=(()=>{let r=Array(8).fill("")})();const displayController=(()=>{return{}})();
+"use strict";const gameBoard=(()=>{let t=Array(9).fill("X");return{contents:t}})();const displayController=(()=>{const t=()=>{let t=gameBoard.contents;for(let t=0;t<gameBoardContents.length;t++){let e=document.querySelector(`[data-board-index="${t}"]`);e.innerHTML=gameBoardContents[t]}};return{displayGameBoardContents:t}})();const PlayerFactory=t=>{return{symbol:t}};displayController.displayGameBoardContents();
