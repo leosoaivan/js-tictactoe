@@ -3,8 +3,13 @@
 const gameBoard = (() => {
   let contents = Array(9).fill('');
 
+  const isNotEmptyAtIndex = (ind) => {
+    return (contents[ind] !== '' ? true : false );
+  };
+
   return {
     contents,
+    isNotEmptyAtIndex,
   };
 })();
 
@@ -30,6 +35,9 @@ const playerFactory = (symbol) => {
 
 const gameFactory = () => {
   const gameBoardSquares = [...document.querySelectorAll('.square')];
+  let player1 = playerFactory('X');
+  let player2 = playerFactory('O');
+  let turnCount = 1;
 
   const loadSquares = () => {
     gameBoardSquares.forEach((square) => {
@@ -41,9 +49,23 @@ const gameFactory = () => {
   
   const _modifySquare = (square) => {
     let indexToModify = square.getAttribute('data-board-index');
-    
-    gameBoard.contents[indexToModify] = 'x';
-    displayController.displayGameBoardContents();
+
+    if (gameBoard.isNotEmptyAtIndex(indexToModify)) {
+      return;
+    } else {
+      if (_isEven(turnCount)) {
+        gameBoard.contents[indexToModify] = player2.symbol;
+      } else {
+        gameBoard.contents[indexToModify] = player1.symbol;
+      }
+  
+      turnCount++;
+      displayController.displayGameBoardContents();
+    }
+  };
+
+  const _isEven = (int) => {
+    return (int % 2 === 0 ? true : false);
   };
 
   return {
