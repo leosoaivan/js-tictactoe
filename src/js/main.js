@@ -14,18 +14,14 @@ const gameBoard = (() => {
 })();
 
 const displayController = (() => {
-  const displayGameBoardContents = () => {
-    let contents = gameBoard.contents;
+  const updateSquare = (index) => {
+    let square = document.querySelector(`[data-board-index="${index}"]`);
 
-    for (let i = 0; i < contents.length; i++) {
-      let boardSquare = document.querySelector(`[data-board-index="${i}"]`);
-
-      boardSquare.innerHTML = contents[i];
-    }
+    square.innerHTML = gameBoard.contents[index];
   };
 
   return {
-    displayGameBoardContents,
+    updateSquare,
   };
 })();
 
@@ -33,11 +29,21 @@ const playerFactory = (symbol) => {
   return {symbol};
 };
 
-const gameFactory = () => {
+const gameFactory = (() => {
   const gameBoardSquares = [...document.querySelectorAll('.square')];
   let player1 = playerFactory('X');
   let player2 = playerFactory('O');
-  let turnCount = 1;
+  let turnCount = 0;
+  const winConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
 
   const loadSquares = () => {
     gameBoardSquares.forEach((square) => {
@@ -53,25 +59,54 @@ const gameFactory = () => {
     if (!gameBoard.isEmptyAtIndex(indexToModify)) {
       return;
     } else {
-      if (_isEven(turnCount)) {
-        gameBoard.contents[indexToModify] = player2.symbol;
-      } else {
-        gameBoard.contents[indexToModify] = player1.symbol;
-      }
-  
-      turnCount++;
-      displayController.displayGameBoardContents();
+      _executeMove(indexToModify);
+      displayController.updateSquare(indexToModify);
+      _checkWinner();
     }
   };
+  
+  const _executeMove = (index) => {
+    _updateBoard(_currentPlayer(), index);
+    turnCount++;
+  };
 
-  const _isEven = (int) => {
-    return (int % 2 === 0 ? true : false);
+  const _updateBoard = (player, index) => {
+    gameBoard.contents[index] = player.symbol;
+  };
+
+  const _currentPlayer = () => {
+    return (turnCount % 2 === 0 ? player1 : player2);
+  };
+
+  const _checkWinner = () => {
+    const winConditions = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    if (turnCount >= 5) {
+      winConditions.forEach((c) => {
+        if (gameBoard.contents[c[0]] === '') {
+          return;
+        } else if (
+          gameBoard.contents[c[0]] === gameBoard.contents[c[1]] &&
+          gameBoard.contents[c[0]] === gameBoard.contents[c[2]]
+        ) {
+          console.log('We have a winner!');
+        }
+      });
+    }
   };
 
   return {
     loadSquares,
   };
-};
+})();
 
-let game = gameFactory();
-game.loadSquares();
+gameFactory.loadSquares();
