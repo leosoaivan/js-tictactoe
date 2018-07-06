@@ -3,13 +3,13 @@
 const gameBoard = (() => {
   let contents = Array(9).fill('');
 
-  const isNotEmptyAtIndex = (ind) => {
-    return (contents[ind] !== '' ? true : false );
+  const isEmptyAtIndex = (ind) => {
+    return (contents[ind] === '' ? true : false );
   };
 
   return {
     contents,
-    isNotEmptyAtIndex,
+    isEmptyAtIndex,
   };
 })();
 
@@ -50,7 +50,7 @@ const gameFactory = () => {
   const _modifySquare = (square) => {
     let indexToModify = square.getAttribute('data-board-index');
 
-    if (gameBoard.isNotEmptyAtIndex(indexToModify)) {
+    if (!gameBoard.isEmptyAtIndex(indexToModify)) {
       return;
     } else {
       if (_isEven(turnCount)) {
