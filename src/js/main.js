@@ -34,16 +34,7 @@ const gameFactory = (() => {
   let player1 = playerFactory('X');
   let player2 = playerFactory('O');
   let turnCount = 0;
-  const winConditions = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+  let gameOver = false;
 
   const loadSquares = () => {
     gameBoardSquares.forEach((square) => {
@@ -56,7 +47,7 @@ const gameFactory = (() => {
   const _modifySquare = (square) => {
     let indexToModify = square.getAttribute('data-board-index');
 
-    if (!gameBoard.isEmptyAtIndex(indexToModify)) {
+    if (!gameBoard.isEmptyAtIndex(indexToModify) || gameOver === true) {
       return;
     } else {
       _executeMove(indexToModify);
@@ -98,6 +89,7 @@ const gameFactory = (() => {
           gameBoard.contents[c[0]] === gameBoard.contents[c[1]] &&
           gameBoard.contents[c[0]] === gameBoard.contents[c[2]]
         ) {
+          gameOver = true;
           console.log('We have a winner!');
         }
       });
