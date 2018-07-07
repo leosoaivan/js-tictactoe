@@ -27,6 +27,7 @@
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "node-sass": "^4.9.0",
+    "onchange": "^4.0.0",
     "parallelshell": "^3.0.2",
     "postcss-cli": "^5.0.0",
     "uglify-es": "^3.3.9"
