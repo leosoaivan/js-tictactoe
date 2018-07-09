@@ -8,11 +8,16 @@
 }
 
 .square {
+  box-sizing: border-box;
   width: 150px;
   height: 150px;
   background-color: mediumseagreen;
-
+  
   &:hover {
     background-color: seagreen;
   }
+}
+
+.winner {
+  border: 10px solid red;
 }

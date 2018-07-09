@@ -20,19 +20,32 @@ const displayController = (() => {
     square.innerHTML = gameBoard.contents[index];
   };
 
+  const colorSquares = (array) => {
+    for (let index of array) {
+      let square = document.querySelector(`[data-board-index="${index}"]`);
+      console.log(square);
+
+      square.classList.add('winner');
+    }
+  };
+
   return {
     updateSquare,
+    colorSquares,
   };
 })();
 
-const playerFactory = (symbol) => {
-  return {symbol};
+const playerFactory = (symbol, name) => {
+  return {
+    symbol,
+    name,
+  };
 };
 
 const gameFactory = (() => {
   const gameBoardSquares = [...document.querySelectorAll('.square')];
-  let player1 = playerFactory('X');
-  let player2 = playerFactory('O');
+  let player1 = playerFactory('X', 'Player 1');
+  let player2 = playerFactory('O', 'Player 2');
   let turnCount = 0;
   let gameOver = false;
 
@@ -90,7 +103,8 @@ const gameFactory = (() => {
           gameBoard.contents[c[0]] === gameBoard.contents[c[2]]
         ) {
           gameOver = true;
-          console.log('We have a winner!');
+          displayController.colorSquares(c);
+          _restartGame(confirm(`${_currentPlayer().name} won! Play again?`));
         }
       });
     }
