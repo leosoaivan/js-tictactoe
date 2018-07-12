@@ -14,16 +14,17 @@ const gameBoard = (() => {
 })();
 
 const displayController = (() => {
-  const updateSquare = (index) => {
-    let square = document.querySelector(`[data-board-index="${index}"]`);
+  const updateSquare = (array) => {
+    for (let index of array) {
+      let square = document.querySelector(`[data-board-index="${index}"]`);
 
-    square.innerHTML = gameBoard.contents[index];
+      square.innerHTML = gameBoard.contents[index];
+    }
   };
 
   const colorSquares = (array) => {
     for (let index of array) {
       let square = document.querySelector(`[data-board-index="${index}"]`);
-      console.log(square);
 
       square.classList.add('winner');
     }
@@ -46,32 +47,33 @@ const gameFactory = (() => {
   const gameBoardSquares = [...document.querySelectorAll('.square')];
   let player1 = playerFactory('X', 'Player 1');
   let player2 = playerFactory('O', 'Player 2');
-  let turnCount = 0;
+  let turnCount = 1;
   let gameOver = false;
 
   const loadSquares = () => {
     gameBoardSquares.forEach((square) => {
       square.onclick = () => {
         _modifySquare(square);
+        _checkWinner();
+        turnCount++;
       };
     });
   };
   
   const _modifySquare = (square) => {
     let indexToModify = square.getAttribute('data-board-index');
+    console.log(gameBoard.contents);
 
     if (!gameBoard.isEmptyAtIndex(indexToModify) || gameOver === true) {
       return;
     } else {
       _executeMove(indexToModify);
-      displayController.updateSquare(indexToModify);
-      _checkWinner();
+      displayController.updateSquare([indexToModify]);
     }
   };
   
   const _executeMove = (index) => {
     _updateBoard(_currentPlayer(), index);
-    turnCount++;
   };
 
   const _updateBoard = (player, index) => {
@@ -79,7 +81,7 @@ const gameFactory = (() => {
   };
 
   const _currentPlayer = () => {
-    return (turnCount % 2 === 0 ? player1 : player2);
+    return (turnCount % 2 === 0 ? player2 : player1);
   };
 
   const _checkWinner = () => {
@@ -94,7 +96,7 @@ const gameFactory = (() => {
       [2, 4, 6],
     ];
 
-    if (turnCount >= 5) {
+    if (turnCount >= 4) {
       winConditions.forEach((c) => {
         if (gameBoard.contents[c[0]] === '') {
           return;
@@ -104,10 +106,38 @@ const gameFactory = (() => {
         ) {
           gameOver = true;
           displayController.colorSquares(c);
-          _restartGame(confirm(`${_currentPlayer().name} won! Play again?`));
+          let restartConfirmation = confirm(
+            `${_currentPlayer().name} won! Play again?`
+          );
+          _askForRestart(restartConfirmation);
+        } else {
         }
       });
     }
+  };
+
+  const _askForRestart = (boolean) => {
+    if (boolean === false) {
+      return;
+    } else {
+      _restartGame();
+    }
+  };
+
+  const _restartGame = () => {
+    gameOver = false;
+    turnCount = 0;
+    for (let i = 0; i < gameBoard.contents.length; i++) {
+      gameBoard.contents[i] = '';
+    }
+    displayController.updateSquare(Array(9).keys());
+    _removeStyling();
+  };
+
+  const _removeStyling = () => {
+    gameBoardSquares.forEach((square) => {
+      square.classList.remove('winner');
+    });
   };
 
   return {
