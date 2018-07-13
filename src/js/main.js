@@ -96,7 +96,7 @@ const gameFactory = (() => {
       [2, 4, 6],
     ];
 
-    if (turnCount >= 4) {
+    if (turnCount >= 5) {
       winConditions.forEach((c) => {
         if (gameBoard.contents[c[0]] === '') {
           return;
