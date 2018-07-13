@@ -47,7 +47,7 @@ const gameFactory = (() => {
   const gameBoardSquares = [...document.querySelectorAll('.square')];
   let player1 = playerFactory('X', 'Player 1');
   let player2 = playerFactory('O', 'Player 2');
-  let turnCount = 1;
+  let turnCount = 0;
   let gameOver = false;
 
   const loadSquares = () => {
@@ -55,7 +55,6 @@ const gameFactory = (() => {
       square.onclick = () => {
         _modifySquare(square);
         _checkWinner();
-        turnCount++;
       };
     });
   };
@@ -67,6 +66,7 @@ const gameFactory = (() => {
     if (!gameBoard.isEmptyAtIndex(indexToModify) || gameOver === true) {
       return;
     } else {
+      turnCount++;
       _executeMove(indexToModify);
       displayController.updateSquare([indexToModify]);
     }
@@ -110,9 +110,16 @@ const gameFactory = (() => {
             `${_currentPlayer().name} won! Play again?`
           );
           _askForRestart(restartConfirmation);
-        } else {
         }
       });
+    }
+
+    if (turnCount === 9) {
+      gameOver = true;
+      let restartConfirmation = confirm(
+        `The game tied. Play again?`
+      );
+      _askForRestart(restartConfirmation);
     }
   };
 
