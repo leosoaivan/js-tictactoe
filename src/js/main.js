@@ -4,12 +4,19 @@ const gameBoard = (() => {
   let contents = Array(9).fill('');
 
   const isEmptyAtIndex = (ind) => {
-    return (contents[ind] === '' ? true : false );
+    return (!Boolean(contents[ind]));
+  };
+
+  const reset = () => {
+    for (let i = 0; i < contents.length; i++) {
+      contents[i] = '';
+    }
   };
 
   return {
     contents,
     isEmptyAtIndex,
+    reset,
   };
 })();
 
@@ -54,14 +61,13 @@ const gameFactory = (() => {
     gameBoardSquares.forEach((square) => {
       square.onclick = () => {
         _modifySquare(square);
-        _checkWinner();
+        _checkGameOver();
       };
     });
   };
   
   const _modifySquare = (square) => {
     let indexToModify = square.getAttribute('data-board-index');
-    console.log(gameBoard.contents);
 
     if (!gameBoard.isEmptyAtIndex(indexToModify) || gameOver === true) {
       return;
@@ -84,7 +90,7 @@ const gameFactory = (() => {
     return (turnCount % 2 === 0 ? player2 : player1);
   };
 
-  const _checkWinner = () => {
+  const _checkGameOver = () => {
     const winConditions = [
       [0, 1, 2],
       [3, 4, 5],
@@ -106,37 +112,35 @@ const gameFactory = (() => {
         ) {
           gameOver = true;
           displayController.colorSquares(c);
-          let restartConfirmation = confirm(
+          let confirmation = confirm(
             `${_currentPlayer().name} won! Play again?`
           );
-          _askForRestart(restartConfirmation);
+          _askForRestart(confirmation);
         }
       });
     }
 
-    if (turnCount === 9) {
+    if (!gameBoard.contents.includes('')) {
       gameOver = true;
-      let restartConfirmation = confirm(
+      let confirmation = confirm(
         `The game tied. Play again?`
       );
-      _askForRestart(restartConfirmation);
+      _askForRestart(confirmation);
     }
   };
 
   const _askForRestart = (boolean) => {
-    if (boolean === false) {
-      return;
-    } else {
+    if (boolean) {
       _restartGame();
+    } else {
+      return;
     }
   };
 
   const _restartGame = () => {
     gameOver = false;
     turnCount = 0;
-    for (let i = 0; i < gameBoard.contents.length; i++) {
-      gameBoard.contents[i] = '';
-    }
+    gameBoard.reset();
     displayController.updateSquare(Array(9).keys());
     _removeStyling();
   };
