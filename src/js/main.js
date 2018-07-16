@@ -33,7 +33,7 @@ const displayController = (() => {
     for (let index of array) {
       let square = document.querySelector(`[data-board-index="${index}"]`);
 
-      square.classList.add('winner');
+      square.children[1].classList.add('winner');
     }
   };
 
@@ -43,30 +43,31 @@ const displayController = (() => {
   };
 })();
 
-const playerFactory = (symbol, name) => {
+const playerFactory = (symbol, name, imgsrc) => {
   return {
     symbol,
     name,
+    imgsrc,
   };
 };
 
 const gameFactory = (() => {
   const gameBoardSquares = [...document.querySelectorAll('.square')];
-  let player1 = playerFactory('X', 'Player 1');
-  let player2 = playerFactory('O', 'Player 2');
+  let player1 = playerFactory('X', 'Player 1', 'images/Letter-X.png');
+  let player2 = playerFactory('O', 'Player 2', 'images/Letter-O.png');
   let turnCount = 0;
   let gameOver = false;
 
   const loadSquares = () => {
     gameBoardSquares.forEach((square) => {
       square.onclick = () => {
-        _modifySquare(square);
+        _initiateTurn(square);
         _checkGameOver();
       };
     });
   };
   
-  const _modifySquare = (square) => {
+  const _initiateTurn = (square) => {
     let indexToModify = square.getAttribute('data-board-index');
 
     if (!gameBoard.isEmptyAtIndex(indexToModify) || gameOver === true) {
@@ -74,16 +75,24 @@ const gameFactory = (() => {
     } else {
       turnCount++;
       _executeMove(indexToModify);
-      displayController.updateSquare([indexToModify]);
+      _flipSquare(square);
     }
   };
   
   const _executeMove = (index) => {
-    _updateBoard(_currentPlayer(), index);
+    gameBoard.contents[index] = _currentPlayer().symbol;
   };
 
-  const _updateBoard = (player, index) => {
-    gameBoard.contents[index] = player.symbol;
+  const _flipSquare = (square) => {
+    _addPlayerIcon(square);
+    square.classList.add('is-flipped');
+  };
+
+  const _addPlayerIcon = (square) => {
+    let backFace = square.children[1];
+    let playerIcon = document.createElement('img');
+    playerIcon.src = _currentPlayer().imgsrc;
+    backFace.appendChild(playerIcon);
   };
 
   const _currentPlayer = () => {
