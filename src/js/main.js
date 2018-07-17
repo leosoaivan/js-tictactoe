@@ -158,12 +158,6 @@ const gameFactory = (() => {
     displayController.clearSquares();
   };
 
-  const _removeStyling = () => {
-    gameBoardSquares.forEach((square) => {
-      square.classList.remove('winner');
-    });
-  };
-
   return {
     loadSquares,
   };
