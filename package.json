@@ -22,14 +22,14 @@
     "watch:all": "parallelshell 'npm run serve' 'npm run watch:css' 'npm run watch:js'"
   },
   "devDependencies": {
-    "autoprefixer": "^8.5.1",
-    "browser-sync": "^2.24.4",
+    "autoprefixer": "^8.6.5",
+    "browser-sync": "^2.24.5",
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
-    "node-sass": "^4.9.0",
-    "onchange": "^4.0.0",
+    "node-sass": "^4.9.2",
+    "onchange": "^4.1.0",
     "parallelshell": "^3.0.2",
-    "postcss-cli": "^5.0.0",
+    "postcss-cli": "^5.0.1",
     "uglify-es": "^3.3.9"
   }
 }
