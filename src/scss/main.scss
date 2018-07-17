@@ -1,3 +1,7 @@
+.container {
+  margin-top: 25px;
+}
+
 .gameboard {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -51,4 +55,11 @@ img {
   height: 75%;
   width: 75%;
   top: 15%;
+}
+
+/* Footer */
+footer {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
 }
