@@ -132,25 +132,19 @@ const gameFactory = (() => {
         ) {
           gameOver = true;
           displayController.colorSquares(c);
-          let confirmation = confirm(
-            `${_currentPlayer().name} won! Play again?`
-          );
-          _askForRestart(confirmation);
+          _askForRestart(`${_currentPlayer().name} won! Play again?`);
         }
       });
     }
 
     if (!gameBoard.contents.includes('')) {
       gameOver = true;
-      let confirmation = confirm(
-        `The game tied. Play again?`
-      );
-      _askForRestart(confirmation);
+      _askForRestart('The game tied. Play again?');
     }
   };
 
-  const _askForRestart = (boolean) => {
-    if (boolean) {
+  const _askForRestart = (message) => {
+    if (confirm(message)) {
       _restartGame();
     } else {
       return;
