@@ -21,11 +21,12 @@ const gameBoard = (() => {
 })();
 
 const displayController = (() => {
-  const updateSquare = (array) => {
-    for (let index of array) {
-      let square = document.querySelector(`[data-board-index="${index}"]`);
+  const clearSquares = () => {
+    let squares = document.querySelectorAll('.square');
 
-      square.innerHTML = gameBoard.contents[index];
+    for (let square of squares) {
+      _deletePlayerIcon(square);
+      _removeStyling(square);
     }
   };
 
@@ -37,9 +38,18 @@ const displayController = (() => {
     }
   };
 
+  const _deletePlayerIcon = (square) => {
+    square.children[1].innerHTML = '';
+  };
+
+  const _removeStyling = (square) => {
+    square.children[1].classList.remove('winner');
+    square.classList.remove('is-flipped');
+  };
+
   return {
-    updateSquare,
     colorSquares,
+    clearSquares,
   };
 })();
 
@@ -91,6 +101,7 @@ const gameFactory = (() => {
   const _addPlayerIcon = (square) => {
     let backFace = square.children[1];
     let playerIcon = document.createElement('img');
+
     playerIcon.src = _currentPlayer().imgsrc;
     backFace.appendChild(playerIcon);
   };
@@ -150,8 +161,7 @@ const gameFactory = (() => {
     gameOver = false;
     turnCount = 0;
     gameBoard.reset();
-    displayController.updateSquare(Array(9).keys());
-    _removeStyling();
+    displayController.clearSquares();
   };
 
   const _removeStyling = () => {
