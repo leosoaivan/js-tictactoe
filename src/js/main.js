@@ -53,7 +53,9 @@ const displayController = (() => {
   };
 })();
 
-const playerFactory = (symbol, name, imgsrc) => {
+const playerFactory = (int, symbol, imgsrc) => {
+  name = prompt(`You are Player ${int}. What is your name?`);
+  
   return {
     symbol,
     name,
@@ -63,12 +65,12 @@ const playerFactory = (symbol, name, imgsrc) => {
 
 const gameFactory = (() => {
   const gameBoardSquares = [...document.querySelectorAll('.square')];
-  let player1 = playerFactory('X', 'Player 1', 'images/Letter-X.png');
-  let player2 = playerFactory('O', 'Player 2', 'images/Letter-O.png');
+  let player1 = playerFactory(1, 'X', 'images/Letter-X.png');
+  let player2 = playerFactory(2, 'O', 'images/Letter-O.png');
   let turnCount = 0;
   let gameOver = false;
 
-  const loadSquares = () => {
+  const loadGame = () => {
     gameBoardSquares.forEach((square) => {
       square.onclick = () => {
         _initiateTurn(square);
@@ -159,8 +161,8 @@ const gameFactory = (() => {
   };
 
   return {
-    loadSquares,
+    loadGame,
   };
 })();
 
-gameFactory.loadSquares();
+gameFactory.loadGame();
