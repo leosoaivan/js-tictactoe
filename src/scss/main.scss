@@ -1,3 +1,16 @@
+.buttons {
+  display: flex;
+  justify-content: center;
+
+  button {
+    display: block;
+    width: 10%;
+    height: 50px;
+    margin: 10px 20px;
+
+  }
+}
+
 .container {
   margin-top: 25px;
 }

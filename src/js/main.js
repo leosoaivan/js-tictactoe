@@ -54,7 +54,7 @@ const displayController = (() => {
 })();
 
 const playerFactory = (int, symbol, imgsrc) => {
-  name = prompt(`You are Player ${int}. What is your name?`);
+  name = prompt(`You are Player ${int}. What is your name?`, `Player ${int}`);
   
   return {
     symbol,
@@ -147,21 +147,28 @@ const gameFactory = (() => {
 
   const _askForRestart = (message) => {
     if (confirm(message)) {
-      _restartGame();
+      restartGame();
     } else {
       return;
     }
   };
 
-  const _restartGame = () => {
+  const restartGame = () => {
     gameOver = false;
     turnCount = 0;
     gameBoard.reset();
     displayController.clearSquares();
   };
 
+  const changePlayerNames = () => {
+    player1 = playerFactory(1, 'X', 'images/Letter-X.png');
+    player2 = playerFactory(2, 'O', 'images/Letter-O.png');
+  };
+
   return {
     loadGame,
+    restartGame,
+    changePlayerNames,
   };
 })();
 
